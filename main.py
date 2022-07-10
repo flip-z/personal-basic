@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, url_for, redirect, flash
+from flask import Flask, render_template, url_for, redirect, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 
@@ -33,18 +33,24 @@ def me():
 
 @app.route('/sidequest', methods=['GET', 'POST'])
 def sidequest():
-	try:
-		quests = Quest.query.order_by(Quest.name).all()
-		quest_text = '<ul>'
-		for quest in quests:
-			quest_text += '<li>' + quest.name + ', ' + quest.description + '</li>'
-		quest_text += '</ul>'
-		return quest_text
-	except Exception as e:
-		# e holds description of the error
-		error_text = "<p>The error:<br>" + str(e) + "</p>"
-		hed = '<h1>Something is broken.</h1>'
-		return hed + error_text
+
+
+	if request.method == 'POST':
+		if request.form.get('action1') == 'VALUE1':
+			pass # do something
+		elif  request.form.get('action2') == 'VALUE2':
+			pass # do something else
+		else:
+			pass # unknown
+	elif request.method == 'GET':
+		try:
+			quests = Quest.query.order_by(Quest.name).all()
+			return render_template('sidequest.html', quests=quests)
+		except Exception as e:
+			# e holds description of the error
+			error_text = "<p>The error:<br>" + str(e) + "</p>"
+			hed = '<h1>Something is broken.</h1>'
+			return hed + error_text
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=443, debug=False)

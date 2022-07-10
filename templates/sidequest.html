@@ -5,5 +5,15 @@
 
 <h2>📜 Quest Log 📜</h2>
 
-
+<ul>
+	{% for quest in quests%}
+	<h3>
+		<form method="post" action="/">
+        	<input type="submit" value="⭐" name="action1"/>
+    	</form> {{quest.name}}
+    </h3>
+	
+	<p>{{quest.description}}</p>
+	{% endfor %}
+</ul>
 {% endblock content %}
